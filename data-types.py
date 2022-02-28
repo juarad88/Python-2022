@@ -25,3 +25,45 @@ print(7*8)
 print("Dre"*10)
 print("Dre\n" *10)
 print("5+10=" + str(5+10))
+print("15/2="+str(15/2))
+print("30/2*5="+str(30/2*5))
+#Q1 - 5.4
+player_lives = 3
+#Q2
+login_name = input("Chose your name\n")
+print(f"Hello {login_name}")
+#Q3
+user_money = 1500
+#Q4
+user_number = input(" What is your phone number? (include spaces)\n")
+print(user_number)
+#Q5
+user_name = input("What is your name?\n")
+
+#q6
+user_age = int(input("How old are you"))
+
+#q7
+current_year = 2022
+
+#q8
+print(user_name)
+#q9
+print(user_age)
+#q10
+print(current_year)
+#q11
+user_surname = input("PLease enter your surname\n")
+#q12
+user_school = input("What is the name of your school?\n")
+#q13
+favourtie_food = input("What is your favourite food?\n")
+#q14
+pet_name = input("Please enter oyur pet's name\n")
+#q15
+chocolate = input("How many blocks of chocolate have you had?\n")
+#q16
+player_score = 0
+#q17
+player_highscore = 10000000000000
+

@@ -26,3 +26,5 @@ if buying == "shoes":
 if buying == "nothing":
 	money == 200
 	print(f"you have ${money} left")
+else:
+	print("please enter either item or nothing")

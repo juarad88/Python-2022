@@ -41,7 +41,7 @@ print(user_number)
 user_name = input("What is your name?\n")
 
 #q6
-user_age = int(input("How old are you"))
+user_age = int(input("How old are you\n"))
 
 #q7
 current_year = 2022
@@ -59,11 +59,19 @@ user_school = input("What is the name of your school?\n")
 #q13
 favourtie_food = input("What is your favourite food?\n")
 #q14
-pet_name = input("Please enter oyur pet's name\n")
+pet_name = input("Please enter your pet's name\n")
 #q15
 chocolate = input("How many blocks of chocolate have you had?\n")
 #q16
 player_score = 0
 #q17
 player_highscore = 10000000000000
-
+#q18
+laps_completed = 0
+#q19
+player_ammunition = 100
+#q20
+racing_gear = print("S-teir")
+#q21
+player_speed = 120
+#q22

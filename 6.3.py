@@ -56,5 +56,24 @@ new_tvcost = tv_cost * 0.8
 print(f"However, If you wait for a 20% discount on the tv, It will cost you ${new_tvcost}\n")
 #q25
 crypto_total = int(input("How much Crypto-coins do you own? (Enter a number)\n"))
+#q26
 cryptoindollars = crypto_total * 1.53
+#q27
 print(f"Your current crypto-coin collection has a networth of ${cryptoindollars}\n")
+#q28
+salary = int(input("How much money do you make fortnightly?\n"))
+#q29
+tax = input("What is the current tax rate? (As a decimal)\n")
+#q30
+print(f" This means that you will make ${salary * 0.85} fortnightly\n")
+#q31
+book = input("Enter the name of a book\n")
+#q32
+x = book.lower()
+y = book.upper()
+z = book.title()
+#q33
+print(f"{x}, {y}, {z}")
+number = int(input("Please enter a number\n"))
+#q34
+print(f"{book * number} \n")

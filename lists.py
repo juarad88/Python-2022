@@ -7,3 +7,4 @@ print(fibonacci)
 #q2
 fruit = ["pineapple", "banana", "mango", "orange", "apple"]
 print(fruit)
+#moving to next task

@@ -23,10 +23,46 @@ quarters = Room("""You enter a room that provides a view of the enourmous and co
 mess_hall = Room("""You enter a room that appears to resemlbe a mess hall. There are tables flipped upside down with the same black scorch marks as in the quarters. Once again there are corpses lying on the floor. """)
 
 escape_pods = Room("""You reach the final destination on the spaceship. It's a white room with circular doors on each side. 'Escape pods' you think. You go to unlock one but find that it's already gone. You check the others but find the same result. You are going to need to find an alternate exit out of the spaceship""")
+#exits
+airlock.east = hallway
+airlock.south = quarters
+hallway.east = bridge
+hallway.north = cargo
+quarters.east = mess_hall
+mess_hall.north = hallway
+mess_hall.east = escape_pods
+escape_pods.north = bridge
+
+#items
+item.description = ""#description of item goes inside speech marks
+
+knife = Item("a dirty knife", "knife")
+knife.description = "The knife has a dull sheen to it but it looks rather sharp"
+
+red_keycard = Item("a red keycard","keycard","red card", "card")
+red_keycard.description = "It's as red keycard. It probably opens a door or locker"
+
+blaster = Item("blaster","gun","rilfe", "handgun")
+blaster.description = "The blaster is small enought to carry. It looks futuristic and shoots red lasers."
+
 #variables
 current_room = space
 print(current_room)
-#code
+#binds
+@when ("DIRECTION")
+@when ("go DIRECTION")
+def travel(direction):
+	global current_room
+	if direction in current_room.exits():
+		current_room = current_room.exit(direction)
+		print(f"You go {direction}.")
+		print(current_room)
+@when("look around")
+@when("look")
+def look():
+	global current_room
+	print(current_room)
+	print(current_room.exits())
 
 @when("enter airlock")
 @when("enter spaceship")

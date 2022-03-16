@@ -1,4 +1,5 @@
 from adventurelib import *
+Room.items = Bag()
 #All new code goes here
 
 #rooms
@@ -34,7 +35,7 @@ mess_hall.east = escape_pods
 escape_pods.north = bridge
 
 #items
-item.description = ""#description of item goes inside speech marks
+Item.description = ""#description of item goes inside speech marks
 
 knife = Item("a dirty knife", "knife")
 knife.description = "The knife has a dull sheen to it but it looks rather sharp"
@@ -45,7 +46,18 @@ red_keycard.description = "It's as red keycard. It probably opens a door or lock
 blaster = Item("blaster","gun","rilfe", "handgun")
 blaster.description = "The blaster is small enought to carry. It looks futuristic and shoots red lasers."
 
+alien_relic = Item("alien relic", "relic")
+alien_relic.description = "You take the alien relic. It is a dull gold colour with starnge symbols on it."
+
+#define bags
+mess_hall.items.add(red_keycard)
+cargo.items.add(knife)
+quarters.items.add(alien_relic)
+escape_pods.items.add(blaster)
+
+
 #variables
+inventory = Bag()
 current_room = space
 print(current_room)
 #binds
@@ -62,7 +74,13 @@ def travel(direction):
 def look():
 	global current_room
 	print(current_room)
-	print(current_room.exits())
+	print(f"The exits are {current_room.exits()}")
+	if len(current_room.items) > 0:
+	   print("You also see:")
+	   for item in current_room.items:
+	    print(item) 
+
+
 
 @when("enter airlock")
 @when("enter spaceship")
@@ -80,6 +98,26 @@ def enter_spaceship():
 			""")
 		print(current_room)
 
+@when("get ITEM")
+@when("take ITEM")
+@when("pick up ITEM")
+def pickup(item):
+	if item in current_room.items:
+		t = current_room.items.take(item)
+		inventory.add(t)
+		print(f"You pick up the {item}")
+	else:
+		print(f"You don't see a {item}")
+
+
+@when("inventory")
+@when("show inventory")
+@when("what is in my pocket")
+def player_inventory():
+	print("You are carrying")
+	for item in inventory:
+		print(item)
+
 
 
 #starts the game
@@ -87,4 +125,4 @@ def main():
 	start()
 
 if __name__ == '__main__':
-	main()
+	main() 

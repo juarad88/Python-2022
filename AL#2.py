@@ -24,6 +24,7 @@ quarters = Room("""You enter a room that provides a view of the enourmous and co
 mess_hall = Room("""You enter a room that appears to resemlbe a mess hall. There are tables flipped upside down with the same black scorch marks as in the quarters. Once again there are corpses lying on the floor. """)
 
 escape_pods = Room("""You reach the final destination on the spaceship. It's a white room with circular doors on each side. 'Escape pods' you think. You go to unlock one but find that it's already gone. You check the others but find the same result. You are going to need to find an alternate exit out of the spaceship""")
+
 #exits
 airlock.east = hallway
 airlock.south = quarters
@@ -43,7 +44,7 @@ knife.description = "The knife has a dull sheen to it but it looks rather sharp"
 red_keycard = Item("a red keycard","keycard","red card", "card")
 red_keycard.description = "It's as red keycard. It probably opens a door or locker"
 
-blaster = Item("blaster","gun","rilfe", "handgun")
+blaster = Item("blaster","gun","rifle", "handgun")
 blaster.description = "The blaster is small enought to carry. It looks futuristic and shoots red lasers."
 
 alien_relic = Item("alien relic", "relic")
@@ -59,29 +60,8 @@ escape_pods.items.add(blaster)
 #variables
 inventory = Bag()
 current_room = space
-print(current_room)
+
 #binds
-@when ("DIRECTION")
-@when ("go DIRECTION")
-def travel(direction):
-	global current_room
-	if direction in current_room.exits():
-		current_room = current_room.exit(direction)
-		print(f"You go {direction}.")
-		print(current_room)
-@when("look around")
-@when("look")
-def look():
-	global current_room
-	print(current_room)
-	print(f"The exits are {current_room.exits()}")
-	if len(current_room.items) > 0:
-	   print("You also see:")
-	   for item in current_room.items:
-	    print(item) 
-
-
-
 @when("enter airlock")
 @when("enter spaceship")
 @when("enter ship")
@@ -97,6 +77,25 @@ def enter_spaceship():
 			slam your hand on the button to close the door.
 			""")
 		print(current_room)
+
+#@when ("DIRECTION")
+@when ("go DIRECTION")
+def travel(direction):
+	global current_room
+	if direction in current_room.exits():
+		current_room = current_room.exit(direction)
+		print(f"You go {direction}.")
+		print(current_room)
+
+
+@when("look")
+def look():
+	print(current_room)
+	print(f"The exits are to the, {current_room.exits()}.")
+	if len(current_room.items) > 0:
+		print("You also see:")
+		for item in current_room.items:
+			print(item)
 
 @when("get ITEM")
 @when("take ITEM")
@@ -118,10 +117,12 @@ def player_inventory():
 	for item in inventory:
 		print(item)
 
+ 
 
 
 #starts the game
 def main():
+	print(current_room)
 	start()
 
 if __name__ == '__main__':

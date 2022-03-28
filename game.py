@@ -28,8 +28,18 @@ dark_pool = Room(""" After exiting the tunnel you enter a dark cave with some su
 Temple_of_Dumathion = Room(""" The door opens to a new body of water. You swim through and surface. In front of you is an acient door . Towering above is a hideous ork. He is holding a huge hammer in his hands. "Who dare get past the gate keeper?" He asks. Without waiting for an answer he rushes up to you pulling back his hammer.
 	""")
 
-murials_tomb = Room(""" After walking through the door you walk down a passage way enscribed with ancient language. You are able to make out some of it but not all. "Long ago there was a soldier.... Blessed by the godesss.....said to have magic powers..... Soldier buried here." You continue walking to see the walkway open into a big dusty tomb.
+tomb_entry = Room(""" After walking through the door you walk down a passage way enscribed with ancient language. You are able to make out some of it but not all. "Long ago there was a soldier.... Blessed by the godesss.....said to have magic powers..... Soldier buried here." You continue walking to see the walkway open into a big dusty tomb.
 	""")
+murials_tomb = Room(""" You walk into Murial's tomb. All on the walls a beautiful carvings, telling fo her legacy. Above the tomb is a statue of Murial. But there appers to be something missing. Around the statue's neck hangs a necklace but the famous red jewel is not there. Prehaps it is hidden somewhere? Maybe they just forgot to add it?
+	""")
+
+mirror_room = Room(""" After passing into the next room you see enormous panes of glass all angled differently. On the roof, sits a round orb like object. Through a gap in the roof slivers a single beam of light.
+	""")
+
+treasure_room = Room("""When entering the next room you freeze in awe. This room is filled with gold and jewels and shiny objects in every size possible. This much gold would make even a king look poor. Shame you can't carry it all
+	""")
+
+
 
 #starts the game
 def main():

@@ -1,6 +1,8 @@
 from adventurelib import *
+inventory = Bag()
 #All new code goes here
 
+#rooms
 starting_room = Room(""" You look around and see a small wooden desk in one corner of the room, a bookshelf in another and a cupboard against one of the walls. In front of you is a door with some kind of lock on it.
 	""")
 
@@ -39,12 +41,50 @@ mirror_room = Room(""" After passing into the next room you see enormous panes o
 treasure_room = Room("""When entering the next room you freeze in awe. This room is filled with gold and jewels and shiny objects in every size possible. This much gold would make even a king look poor. Shame you can't carry it all
 	""")
 
+Wizard_lair = Room("""The door opens into a vast stone room. Stairs start to climb up reaching a huge throne high above the ground. On each side of the thorne flames flicker, lighting up the room. Sitting comfortabely on the throne is The wizard that killed you.. he stands up then dissapears, reemerging in front of you. "Back again are we?" He asks. You tighten your grip on your weapon.
+	""")
+
+# Define items
+gold_coin = Item("gold coin", "coin")
+
+
+
+
+current_room = starting_room
+
+#binds
+@when("look")
+@when("look around")
+def look():
+	global current_room
+	print(current_room)
+
+
+@when("go to desk")
+@when("search desk")
+def search_desk():
+	print("You walk up to the desk investigating it. The desk is rather small and made of smooth oak. On the desk sits a candle. the candle is the only light source in the room. The desk has a drawer that can be opened")
+
+@when("open drawer")
+@when("search drawer")
+@when("look in drawer")
+def seacrh_drawer():
+	print("You open the drawer. Inside are some blank pieces of paper as well as a single gold coin")
+
+
+@when("look at bookshelf")
+@when("search bookshelf")
+def search_bookshelf():
+	print("You walk over to the dusty bookshelf. On the racks are many books, some different sizes and colours")
+
+
+
 
 
 #starts the game
 def main():
 	print("You are Desmond, the great hero of the west, and you are a paladin. After returning after defeating the dreadful beast in the Cave Of Sorrows, you hear of a wicked wizard in Alastair and decide to investigate. Upon your arrival,  you discover a red-clad wizard. He addresses you and tells you to leave. You respond by informing him that he is the one who must depart. With broadsword in hand, racing up to the wizard, as your blade slices through him, a plume of crimson smoke clouds your vision , leaving you unconscious.")
-	print("Your body and the world slowly shrink as you fly up into the heavens. As you look up a sharp white light appears. As the light begins to fade a Goddess appears. 'You have accomplished great deeds, and have made the world a better place. Therefore' she continues 'I will give you another chance at life. But in order to live another life you must first defeat the wizard. I will send you to his labyrinth, where you can find him.' She says. 'Be careful though, I only have the power to send you body back. This means that you won't have your armor or your weapons. If you're lucky, You can find some scattered across his labyrinth. She smiles and you regain consciousness in a dim lit room.")
+	print("Your body and the world slowly shrink as you fly up into the heavens. As you look up a sharp white light appears. As the light begins to fade a Goddess appears. 'You have accomplished great deeds, and have made the world a better place. Therefore' she continues 'I will give you another chance at life. But in order to live another life you must first defeat the wizard. I will send you to his labyrinth, where you can find him.' She says. 'Be careful though, I only have the power to send you body back. This means that you won't have your armor or your weapons. If you're lucky, You can find some scattered across his labyrinth. She smiles and you regain consciousness in a dim lit room.\n\n")
 	start()
 
 if __name__ == '__main__':

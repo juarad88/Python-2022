@@ -1,4 +1,5 @@
 from adventurelib import *
+Room.items = Bag()
 inventory = Bag()
 #All new code goes here
 
@@ -49,6 +50,9 @@ gold_coin = Item("gold coin", "coin")
 
 
 
+#Define bags
+starting_room.items.add(gold_coin)
+
 
 current_room = starting_room
 
@@ -61,9 +65,11 @@ def look():
 
 
 @when("go to desk")
+@when("go to wooden desk")
 @when("search desk")
+@when("search wooden desk")
 def search_desk():
-	print("You walk up to the desk investigating it. The desk is rather small and made of smooth oak. On the desk sits a candle. the candle is the only light source in the room. The desk has a drawer that can be opened")
+	print("You walk up to the desk investigating it. The desk is rather small and made of smooth oak. On the desk sits a candle. The candle is the only light source in the room. The desk has a drawer that can be opened")
 
 @when("open drawer")
 @when("search drawer")
@@ -71,15 +77,38 @@ def search_desk():
 def seacrh_drawer():
 	print("You open the drawer. Inside are some blank pieces of paper as well as a single gold coin")
 
+@when("take ITEM")
+@when("pick up ITEM")
+def pickup(item):
+	if item in current_room.items:
+		t = current_room.items.take(item)
+		inventory.add(t)
+		print(f"You pick up the {item}")
+	else:
+		print(f"You don't see a {item}")
+
+@when("inventory")
+@when("show inventory")
+def player_inventory():
+	print("You are carrying")
+	for item in inventory:
+		print(item)
 
 @when("look at bookshelf")
 @when("search bookshelf")
+@when("go to bookshelf")
 def search_bookshelf():
 	print("You walk over to the dusty bookshelf. On the racks are many books, some different sizes and colours")
 
+@when("take book")
+def take_book():
+	print("As you go to take a book of the shelf, you find that the book won't move. On frustration you pull the book and and low grumbling sound. After a few seconds the entire bookshelf has moved to one side, revealing a sectret room")
 
-
-
+@when("enter")
+@when("enter secret room")
+def secret_room():
+	print(""""You enter the scret room\n
+		Inside is a wooden table filled with papers with some strange writting that you cannot read""")
 
 #starts the game
 def main():

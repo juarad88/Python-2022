@@ -47,11 +47,12 @@ Wizard_lair = Room("""The door opens into a vast stone room. Stairs start to cli
 
 # Define items
 gold_coin = Item("gold coin", "coin")
-
+paper_clip = Item("paper clip")
 
 
 #Define bags
 starting_room.items.add(gold_coin)
+starting_room.items.add(paper_clip)
 
 
 current_room = starting_room
@@ -62,6 +63,48 @@ current_room = starting_room
 def look():
 	global current_room
 	print(current_room)
+
+
+@when("take ITEM")
+@when("pick up ITEM")
+@when("grab ITEM")
+def pickup(item):
+	if item in current_room.items:
+		t = current_room.items.take(item)
+		inventory.add(t)
+		print(f"You pick up the {item}")
+	elif item == "clothes":
+		print("You take a closer look at the clothes but find they are too small to wear")
+	elif item == "book":
+		print("As you go to take a book off the shelf, you find that the book won't move. In frustration you pull the book and and low grumbling sound. After a few seconds the entire bookshelf has moved to one side, revealing a sectret room")
+		@when("enter")
+		@when("enter secret room")
+		def secret_room():
+			print(""""You enter the scret room. Inside is a wooden table filled with papers with some strange writting that you cannot read Holding them together is a paper clip""")
+	else:
+		print(f"You can't take a {item}")
+
+
+
+@when("inventory")
+@when("show inventory")
+def player_inventory():
+	print("You are carrying")
+	for item in inventory:
+		print(item)
+#1st room
+
+@when("look at bookshelf")
+@when("search bookshelf")
+@when("go to bookshelf")
+def search_bookshelf():
+	print("You walk over to the dusty bookshelf. On the racks are many books, some different sizes and colours")
+
+@when("go to cupboard")
+@when("search cupboard")
+@when("look at cupboard")
+def search_cupboard():
+	print("You go over to the cupboard . It is tall and made of a dark oak. You open it revealing some old clothes.")
 
 
 @when("go to desk")
@@ -77,41 +120,14 @@ def search_desk():
 def seacrh_drawer():
 	print("You open the drawer. Inside are some blank pieces of paper as well as a single gold coin")
 
-@when("take ITEM")
-@when("pick up ITEM")
-def pickup(item):
-	if item in current_room.items:
-		t = current_room.items.take(item)
-		inventory.add(t)
-		print(f"You pick up the {item}")
-	else:
-		print(f"You don't see a {item}")
-
-@when("inventory")
-@when("show inventory")
-def player_inventory():
-	print("You are carrying")
-	for item in inventory:
-		print(item)
-
-@when("look at bookshelf")
-@when("search bookshelf")
-@when("go to bookshelf")
-def search_bookshelf():
-	print("You walk over to the dusty bookshelf. On the racks are many books, some different sizes and colours")
-
-@when("take book")
-def take_book():
-	print("As you go to take a book of the shelf, you find that the book won't move. On frustration you pull the book and and low grumbling sound. After a few seconds the entire bookshelf has moved to one side, revealing a sectret room")
-
-@when("enter")
-@when("enter secret room")
-def secret_room():
-	print(""""You enter the scret room\n
-		Inside is a wooden table filled with papers with some strange writting that you cannot read""")
 
 #starts the game
 def main():
+	print("""
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+		^^^^^^^^^^^^^^^^^^^^ \_*_\ Paladin's Plight /_*_/ ^^^^^^^^^^^^^^^^^^^^^
+		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+		""")
 	print("You are Desmond, the great hero of the west, and you are a paladin. After returning after defeating the dreadful beast in the Cave Of Sorrows, you hear of a wicked wizard in Alastair and decide to investigate. Upon your arrival,  you discover a red-clad wizard. He addresses you and tells you to leave. You respond by informing him that he is the one who must depart. With broadsword in hand, racing up to the wizard, as your blade slices through him, a plume of crimson smoke clouds your vision , leaving you unconscious.")
 	print("Your body and the world slowly shrink as you fly up into the heavens. As you look up a sharp white light appears. As the light begins to fade a Goddess appears. 'You have accomplished great deeds, and have made the world a better place. Therefore' she continues 'I will give you another chance at life. But in order to live another life you must first defeat the wizard. I will send you to his labyrinth, where you can find him.' She says. 'Be careful though, I only have the power to send you body back. This means that you won't have your armor or your weapons. If you're lucky, You can find some scattered across his labyrinth. She smiles and you regain consciousness in a dim lit room.\n\n")
 	start()

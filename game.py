@@ -51,9 +51,9 @@ Wizard_lair = Room("""The door opens into a vast stone room. Stairs start to cli
 
 # Define items
 gold_coin = Item("gold coin", "coin")
-paper_clip = Item("paper clip")
+paper_clip = Item("paper clip","paperclip")
 beef_jerky = Item("dried beef jerky", "beef jerky", "jerky", "dried jerky")
-beef_jerky.discription = "The dried meet looks old but edible."
+beef_jerky.discription = "The dried meat looks old but edible."
 
 
 #Define bags
@@ -62,7 +62,7 @@ starting_room.items.add(paper_clip)
 store_room.items.add(beef_jerky)
 
 current_room = starting_room
-
+door_opened = False
 player_health = 100
 
 #binds
@@ -90,7 +90,7 @@ def pickup(item):
 		def secret_room():
 			print("""You enter the scret room. Inside is a wooden table filled with papers with some strange writting that you cannot read Holding them together is a paper clip""")
 	else:
-		print(f"You can't take a {item}")
+		print(f"You can't take {item}")
 
 
 
@@ -125,25 +125,44 @@ def search_desk():
 @when("open drawer")
 @when("search drawer")
 @when("look in drawer")
+@when("open draw")
+@when("search draw")
+@when("look in draw")
 def seacrh_drawer():
 	print("You open the drawer. Inside are some blank pieces of paper as well as a single gold coin")
 
 @when("use paper clip")
+@when("use paperclip")
 #@when("go to door")
 #@when("go to lock")
 #@when("pick lock")
 def pick_lock():
 	if inventory.find("paper clip") and current_room == starting_room:
-		print("You go to the door and unfold the paper clip and insert it into the lock. After turning it around a few times you hear a soft click, and the lock is off.")
-		@when("open door")
-		@when("go through door")
-		@when("exit room")
-		def exit_startingroom():
-			print("You go through the door and into the next room")
-			current_room = store_room
-			print(current_room)
+		print("You go to the door and unfold the paper clip and insert it into the lock. After turning it around a few times you hear a soft click, and the lock is off.")	
+		global door_opened
+		door_opened = True 
 	else:
 		print("You don't have the equipment to pick the lock")
+		
+		                         
+                       
+@when("open door")
+@when("go through door")
+@when("exit room")
+@when("exit")
+@when("leave")
+@when("leave room")
+def exit_startingroom():
+	global current_room
+	if door_opened == True:
+		print("You go through the door and into the next room")
+		current_room = store_room
+		print(current_room)
+	else:
+		print("The door is locked")
+
+
+
 
 #2nd Room
 @when("search crates")
@@ -152,9 +171,13 @@ def pick_lock():
 @when("look in crates")
 @when("look inside of crates")
 @when("look inside crates")
+@when("open crate")
+@when("open crates")
 def search_crates():
-	print("You search the crates. Inside you find some dreid beef jerky")
-
+	if current_room == store_room:
+		print("You search the crates. Inside you find some dreid beef jerky")
+	else:
+		print("there are no crates here")
 
 @when("eat jerky")
 @when("use jerky")
@@ -162,14 +185,40 @@ def search_crates():
 @when("eat dried beef jerky")
 @when("use beef jerky")
 @when("use dried beef jerky")
-if beef_jerky in inventory:
 def eat_jerky():
-	print("You eat the jerky. It's tough but doesn't taste too bad")
-	player_health += 20 
+	if inventory.find("beef jerky"):
+		global player_health
+		if player_health > 100:
+			print("You eat the jerky. It's tough but doesn't taste too bad")
+			player_health += 20 
+		elif player_health < 100:
+			player_health = 100
+		elif player_health == 100:
+			print("Health is full")
+			player_health = 100
+		inventory.take("jerky")
+
+@when("player health")
+@when("health")
+@when("show player health")
+@when("show health")
+def show_health():
+	print(player_health)
 
 
-
-
+@when("open door")
+@when("go through door")
+@when("exit room")
+@when("exit")
+@when("leave")
+@when("leave room")
+def exit_storeroom():
+	global current_room
+	if current_room == store_room:
+		print("You go through the door and into the next room")
+		current_room = weapon_room
+		print(current_room)
+	
 
 
 #starts the game

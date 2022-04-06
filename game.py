@@ -11,10 +11,10 @@ inventory = Bag()
 starting_room = Room(""" You look around and see a small wooden desk in one corner of the room, a bookshelf in another and a cupboard against one of the walls. In front of you is a door with some kind of lock on it.
 	""")
 
-store_room = Room(""" As you enter the room you see large old dusty crates stacked upon each other. You see a old wooden door with no lock on to your right
+store_room = Room(""" As you enter the room you see large old dusty crates stacked upon each other. You see a old wooden door with no lock.
 	""")
 
-weapon_room = Room(""" You stroll inside the next room. Inside you see racks and racks filled with a large assortment of weapons. Swords, axes, spears and hammers. Once again there is a dorr wit a lock on it.
+weapon_room = Room(""" You walk inside the next room. Inside you see racks and racks filled with a large assortment of weapons. Swords, axes, spears and hammers. Once again there is a door wit a lock on it.
 	""") 
 
 twisted_caverns = Room(""" The door opens to a vast room with 3 tunnels, and a goblin warrior guarding them. He appears to be holding some type of rusty dagger.
@@ -54,13 +54,16 @@ gold_coin = Item("gold coin", "coin")
 paper_clip = Item("paper clip","paperclip")
 beef_jerky = Item("dried beef jerky", "beef jerky", "jerky", "dried jerky")
 beef_jerky.discription = "The dried meat looks old but edible."
-
+sword = Item("sword")
+sword.discription
 
 #Define bags
 starting_room.items.add(gold_coin)
 starting_room.items.add(paper_clip)
 store_room.items.add(beef_jerky)
+weapon_room.items.add(sword)
 
+#variables
 current_room = starting_room
 door_opened = False
 player_health = 100
@@ -72,7 +75,7 @@ def look():
 	global current_room
 	print(current_room)
 
-
+#takes item
 @when("take ITEM")
 @when("pick up ITEM")
 @when("grab ITEM")
@@ -81,16 +84,25 @@ def pickup(item):
 		t = current_room.items.take(item)
 		inventory.add(t)
 		print(f"You pick up the {item}")
+		print(Item.description())
 	elif item == "clothes":
 		print("You take a closer look at the clothes but find they are too small to wear")
 	elif item == "book":
-		print("As you go to take a book off the shelf, you find that the book won't move. In frustration you pull the book and and low grumbling sound. After a few seconds the entire bookshelf has moved to one side, revealing a sectret room")
+		print("As you go to take a book off the shelf, you find that the book won't move. In frustration you pull the book and and low grumbling sound. After a few seconds the entire bookshelf has moved to one side, revealing a secret room")
 		@when("enter")
 		@when("enter secret room")
+
+
+
 		def secret_room():
-			print("""You enter the scret room. Inside is a wooden table filled with papers with some strange writting that you cannot read Holding them together is a paper clip""")
+			print("""You enter the secret room. Inside is a wooden table filled with papers with some strange writting that you cannot read Holding them together is a paper clip""")
 	else:
 		print(f"You can't take {item}")
+
+
+
+
+
 
 
 
@@ -100,8 +112,8 @@ def player_inventory():
 	print("You are carrying")
 	for item in inventory:
 		print(item)
-#1st room
 
+#1st room
 @when("look at bookshelf")
 @when("search bookshelf")
 @when("go to bookshelf")
@@ -140,7 +152,7 @@ def pick_lock():
 	if inventory.find("paper clip") and current_room == starting_room:
 		print("You go to the door and unfold the paper clip and insert it into the lock. After turning it around a few times you hear a soft click, and the lock is off.")	
 		global door_opened
-		door_opened = True 
+		door_opened = True
 	else:
 		print("You don't have the equipment to pick the lock")
 		
@@ -154,9 +166,13 @@ def pick_lock():
 @when("leave room")
 def exit_startingroom():
 	global current_room
-	if door_opened == True:
+	if door_opened == True and current_room == starting_room:
 		print("You go through the door and into the next room")
 		current_room = store_room
+		print(current_room)
+	elif door_opened == True and current_room == store_room:
+		print("You go through the door and into the next room")
+		current_room = weapon_room
 		print(current_room)
 	else:
 		print("The door is locked")
@@ -175,7 +191,7 @@ def exit_startingroom():
 @when("open crates")
 def search_crates():
 	if current_room == store_room:
-		print("You search the crates. Inside you find some dreid beef jerky")
+		print("You search the crates. Inside you find some dried beef jerky")
 	else:
 		print("there are no crates here")
 
@@ -189,10 +205,11 @@ def eat_jerky():
 	if inventory.find("beef jerky"):
 		global player_health
 		if player_health > 100:
-			print("You eat the jerky. It's tough but doesn't taste too bad")
-			player_health += 20 
+			player_health += 20
+			print("You eat the jerky. It's tough but doesn't taste too bad") 
 		elif player_health < 100:
 			player_health = 100
+			print("You eat the jerky. It's tough but doesn't taste too bad")
 		elif player_health == 100:
 			print("Health is full")
 			player_health = 100
@@ -206,19 +223,28 @@ def show_health():
 	print(player_health)
 
 
-@when("open door")
-@when("go through door")
-@when("exit room")
-@when("exit")
-@when("leave")
-@when("leave room")
-def exit_storeroom():
-	global current_room
-	if current_room == store_room:
-		print("You go through the door and into the next room")
-		current_room = weapon_room
-		print(current_room)
+#3rd room
+@when("search weapons")
+@when("search racks")
+@when("search weapon racks")
+@when("inspect weapons")
+@when("inspect racks")
+@when("inspect weapon racks")
+@when("go to weapons")
+@when("go to racks")
+@when("go to weapon racks")
+def search_weapons():
+	print("You inspect the wepon racks. There are plenty of weapons to chose from. You are only strong enough to carry one weapon. What weapon will you chose? Axe, sword, spear or hammer"):
 	
+
+	#print("You take a sword. It's hilt is wrapped in a dark but soft leather. The pommel has a orange jewel embedded inside it. It's crossguard is shaped like a dragons wing on each side of the sword. The blade is double edged and appears very sharp. A good choice ")
+
+
+
+
+
+
+
 
 
 #starts the game

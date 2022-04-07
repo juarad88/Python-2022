@@ -14,7 +14,7 @@ starting_room = Room(""" You look around and see a small wooden desk in one corn
 store_room = Room(""" As you enter the room you see large old dusty crates stacked upon each other. You see a old wooden door with no lock.
 	""")
 
-weapon_room = Room(""" You walk inside the next room. Inside you see racks and racks filled with a large assortment of weapons. Swords, axes, spears and morningstars. Once again there is a door wit a lock on it.
+weapon_room = Room(""" You walk inside the next room. Inside you see racks and racks filled with a large assortment of weapons. Swords, axes, spears and morningstars. Once again there is a door with no lock on it.
 	""") 
 
 twisted_caverns = Room(""" The door opens to a vast room with 3 tunnels, and a goblin warrior guarding them. He appears to be holding some type of rusty dagger.
@@ -122,8 +122,15 @@ def pickup(item):
 	elif item == "sword" and axe not in inventory and spear not in inventory and morningstar not in inventory:
 		print(f"You pick up the {item}")
 		print(Item.description())
-		
-	
+	elif item == "axe" and sword not in inventory and spear not in inventory and morningstar not in inventory:
+		print(f"You pick up the {item}")
+		print(Item.description())
+	elif item == "spear" and axe not in inventory and sword not in inventory and morningstar not in inventory:
+		print(f"You pick up the {item}")
+		print(Item.description())
+	elif item == "morningstar" and axe not in inventory and spear not in inventory and sword not in inventory:
+		print(f"You pick up the {item}")
+		print(Item.description())
 	else:
 		print(f"You can't take {item}")
 
@@ -145,6 +152,9 @@ def player_inventory():
 @when("look at bookshelf")
 @when("search bookshelf")
 @when("go to bookshelf")
+@when("look at book shelf")
+@when("search book shelf")
+@when("go to book shelf")
 def search_bookshelf():
 	print("You walk over to the dusty bookshelf. On the racks are many books, some different sizes and colours")
 

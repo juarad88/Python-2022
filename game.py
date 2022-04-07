@@ -14,7 +14,7 @@ starting_room = Room(""" You look around and see a small wooden desk in one corn
 store_room = Room(""" As you enter the room you see large old dusty crates stacked upon each other. You see a old wooden door with no lock.
 	""")
 
-weapon_room = Room(""" You walk inside the next room. Inside you see racks and racks filled with a large assortment of weapons. Swords, axes, spears and hammers. Once again there is a door wit a lock on it.
+weapon_room = Room(""" You walk inside the next room. Inside you see racks and racks filled with a large assortment of weapons. Swords, axes, spears and morningstars. Once again there is a door wit a lock on it.
 	""") 
 
 twisted_caverns = Room(""" The door opens to a vast room with 3 tunnels, and a goblin warrior guarding them. He appears to be holding some type of rusty dagger.
@@ -51,17 +51,41 @@ Wizard_lair = Room("""The door opens into a vast stone room. Stairs start to cli
 
 # Define items
 gold_coin = Item("gold coin", "coin")
+gold_coin.description = "The coin is made of gold. It's a bit dirty but you can make out a frog on one side. Weird coin"
+
 paper_clip = Item("paper clip","paperclip")
+paper_clip.description = "It's an ordinary paper clip"
+
 beef_jerky = Item("dried beef jerky", "beef jerky", "jerky", "dried jerky")
-beef_jerky.discription = "The dried meat looks old but edible."
+beef_jerky.description = "The dried meat looks old but edible."
+
 sword = Item("sword")
-sword.discription
+sword.description = "You take a sword. It's hilt is wrapped in a dark but soft leather. The pommel has a orange jewel embedded inside it. It's crossguard is shaped like a dragons wing on each side of the sword. The blade is double edged and appears very sharp. A good choice" 
+
+axe = Item("axe", "double sided axe")
+axe.description = "You pick up the axe inspecting it. It has a long handle that has enough room to weild with two hands. It is a double sided axe, with a spike on the top. The blades are big and the edges are extremely sharp. A brutes weapon"
+
+spear = Item("spear")
+spear.description = "You take a dangerous lookung spear. The spear is about 2 metres long. The handle is made of polished oak with cloth wrapped tightly around the shaft acting as a handle. The blade starts by curving outwards then coming back in to make a very sharp tip. A ranged weapon "
+
+morningstar = Item("mace")
+morningstar.description = "You pick up a mace. The handle is made of metal. Cloth is wrapped around to ensure the weapon doesn't fly out your hand when you swing it. The end of the mace is heavy and has sharp spikes coming out in all directions. A lethal weapon"
+
+
+
+
+
+
+
 
 #Define bags
 starting_room.items.add(gold_coin)
 starting_room.items.add(paper_clip)
 store_room.items.add(beef_jerky)
 weapon_room.items.add(sword)
+weapon_room.items.add(axe)
+weapon_room.items.add(spear)
+weapon_room.items.add(morningstar)
 
 #variables
 current_room = starting_room
@@ -84,18 +108,22 @@ def pickup(item):
 		t = current_room.items.take(item)
 		inventory.add(t)
 		print(f"You pick up the {item}")
-		print(Item.description())
+	if item in inventory:
+		f=inventory.find(item)
+		print(f.description)
 	elif item == "clothes":
 		print("You take a closer look at the clothes but find they are too small to wear")
 	elif item == "book":
 		print("As you go to take a book off the shelf, you find that the book won't move. In frustration you pull the book and and low grumbling sound. After a few seconds the entire bookshelf has moved to one side, revealing a secret room")
 		@when("enter")
 		@when("enter secret room")
-
-
-
 		def secret_room():
 			print("""You enter the secret room. Inside is a wooden table filled with papers with some strange writting that you cannot read Holding them together is a paper clip""")
+	elif item == "sword" and axe not in inventory and spear not in inventory and morningstar not in inventory:
+		print(f"You pick up the {item}")
+		print(Item.description())
+		
+	
 	else:
 		print(f"You can't take {item}")
 
@@ -234,11 +262,13 @@ def show_health():
 @when("go to racks")
 @when("go to weapon racks")
 def search_weapons():
-	print("You inspect the wepon racks. There are plenty of weapons to chose from. You are only strong enough to carry one weapon. What weapon will you chose? Axe, sword, spear or hammer"):
+	print("You inspect the wepon racks. There are plenty of weapons to chose from. You are only strong enough to carry one weapon. What weapon will you chose? Axe, sword, spear or morningstar")
+
+
+
 	
 
-	#print("You take a sword. It's hilt is wrapped in a dark but soft leather. The pommel has a orange jewel embedded inside it. It's crossguard is shaped like a dragons wing on each side of the sword. The blade is double edged and appears very sharp. A good choice ")
-
+	
 
 
 

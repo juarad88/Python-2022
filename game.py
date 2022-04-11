@@ -108,6 +108,26 @@ def pickup(item):
 		t = current_room.items.take(item)
 		inventory.add(t)
 		print(f"You pick up the {item}")
+		if item == "sword":
+			print("After taking your weapon, All the other weapons disappear in a plume of smoke")
+			current_room.items.take('axe')
+			current_room.items.take('spear')
+			current_room.items.take('morningstar')
+		if item == "axe":
+			print("After taking your weapon, All the other weapons disappear in a plume of smoke")
+			current_room.items.take('sword')
+			current_room.items.take('spear')
+			current_room.items.take('morningstar')
+		if item == "spear":
+			print("After taking your weapon, All the other weapons disappear in a plume of smoke")
+			current_room.items.take('axe')
+			current_room.items.take('sword')
+			current_room.items.take('morningstar')
+		if item == "morningstar":
+			print("After taking your weapon, All the other weapons disappear in a plume of smoke")
+			current_room.items.take('axe')
+			current_room.items.take('spear')
+			current_room.items.take('sword')
 	if item in inventory:
 		f=inventory.find(item)
 		print(f.description)
@@ -119,28 +139,7 @@ def pickup(item):
 		@when("enter secret room")
 		def secret_room():
 			print("""You enter the secret room. Inside is a wooden table filled with papers with some strange writting that you cannot read Holding them together is a paper clip""")
-	elif item == "sword" and axe not in inventory and spear not in inventory and morningstar not in inventory:
-		print(f"You pick up the {item}")
-		print(Item.description())
-	elif item == "axe" and sword not in inventory and spear not in inventory and morningstar not in inventory:
-		print(f"You pick up the {item}")
-		print(Item.description())
-	elif item == "spear" and axe not in inventory and sword not in inventory and morningstar not in inventory:
-		print(f"You pick up the {item}")
-		print(Item.description())
-	elif item == "morningstar" and axe not in inventory and spear not in inventory and sword not in inventory:
-		print(f"You pick up the {item}")
-		print(Item.description())
-	else:
-		print(f"You can't take {item}")
-
-
-
-
-
-
-
-
+	
 @when("inventory")
 @when("show inventory")
 def player_inventory():
@@ -212,6 +211,10 @@ def exit_startingroom():
 		print("You go through the door and into the next room")
 		current_room = weapon_room
 		print(current_room)
+	elif door_opened == True and current_room == weapon_room:
+		print("You go through the door and into the next room")
+		current_room = twisted_caverns
+		print(current_room)	
 	else:
 		print("The door is locked")
 
@@ -272,11 +275,13 @@ def show_health():
 @when("go to racks")
 @when("go to weapon racks")
 def search_weapons():
-	print("You inspect the wepon racks. There are plenty of weapons to chose from. You are only strong enough to carry one weapon. What weapon will you chose? Axe, sword, spear or morningstar")
+	if current_room == weapon_room:
+		print("You inspect the wepon racks. There are plenty of weapons to chose from. You are only strong enough to carry one weapon. What weapon will you chose? Axe, sword, spear or morningstar")
 
 
+#4th room (1st fight)
 
-	
+
 
 	
 

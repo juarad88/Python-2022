@@ -1,4 +1,5 @@
 from adventurelib import *
+import random
 Room.items = Bag()
 inventory = Bag()
 #All new code goes here
@@ -91,6 +92,9 @@ weapon_room.items.add(morningstar)
 current_room = starting_room
 door_opened = False
 player_health = 100
+goblin_health = 35
+damage = 0
+
 
 #binds
 @when("look")
@@ -215,6 +219,13 @@ def exit_startingroom():
 		print("You go through the door and into the next room")
 		current_room = twisted_caverns
 		print(current_room)	
+	elif door_opened == True and current_room == twisted_caverns and goblin_health > 0:
+		print("You cannot exit the room. The goblin is guarding all possible exits")
+		current_room = twisted_caverns
+	elif door_opened == True and current_room == weapon_room and goblin_health <= 0:
+		print("After slaying the goblin you go through the door and into the next room")
+		current_room = twisted_caverns
+		print(current_room)			
 	else:
 		print("The door is locked")
 
@@ -280,10 +291,59 @@ def search_weapons():
 
 
 #4th room (1st fight)
+@when("attack goblin")
+@when("fight goblin")
+@when("kill goblin")
+@when("slay goblin")
+@when(" hit goblin")
+@when("attack goblin with sword")
+@when("fight goblin with sword")
+@when("kill goblin with sword")
+@when("slay goblin with sword")
+@when("hit goblin with sword")
+@when("attack goblin with axe")
+@when("fight goblin with axe")
+@when("kill goblin with axe")
+@when("slay goblin with axe")
+@when("hit goblin with axe")
+@when("attack goblin with spear")
+@when("fight goblin with spear")
+@when("kill goblin with spear")
+@when("slay goblin with spear")
+@when("hit goblin with spear")
+@when("attack goblin with morningstar")
+@when("fight goblin with morningstar")
+@when("kill goblin with morningstar")
+@when("slay goblin with morningstar")	
+@when("hit goblin with morningstar")
+def fight_goblin():
+	if current_room == twisted_caverns:
+		print("You swing at the goblin but it manages to dodge your attack just in time. The goblin stumbles back, off balance.")
+		global goblin_health
+		while goblin_health >= 1:
+			choice = input("What will you do?\nAttack\nDefend\n")
+			if choice.lower() == "attack":
+				global damage
+				damage == random.randint(1,10)
+				if damage == 1:
+					print("You miss. Your pathetic attack doesn't even graze your opponent, leaving you wide open")
+					print("The goblin slashes at your body with his rusty dagger.")
+					player_health -= 20
+				if 2 <= damage <=4:
+					print("You swing at the goblin, however, your swing is weak and doesn't do that mcuh damage to the goblin")
+					goblin_health -=10
+				if 5 <= damage <= 7:
+					print("You swing your weapon at the goblin. It hits him hard enough to make him stagger back")
+					goblin_health -=15
+				if 5 <= damage <=9:
+					print("You draw back your arm and swing at the goblin. It hit's him on the head causing a large amount of damage to it")
+					goblin_health -=20
+				if damage == 10:
+					print("You launch your weapon at the goblin with all your strength. It hits him on the head producing a loud crunch. The goblin falls to the ground")
+					goblin_health -=30
+		else:
+			print("You hit the goblin one final time. Blood starts spilling on the ground, forming a puddle around it's head.")
 
-
-
-	
 
 
 

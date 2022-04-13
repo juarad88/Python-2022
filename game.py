@@ -18,16 +18,7 @@ store_room = Room(""" As you enter the room you see large old dusty crates stack
 weapon_room = Room(""" You walk inside the next room. Inside you see racks and racks filled with a large assortment of weapons. Swords, axes, spears and morningstars. Once again there is a door with no lock on it.
 	""") 
 
-twisted_caverns = Room(""" The door opens to a vast room with 3 tunnels, and a goblin warrior guarding them. He appears to be holding some type of rusty dagger.
-	""")
-
-cavern_1 = Room(""" You venture down the 1st cavern. \n After walking in complete darkness for a few minutes a green glowing light appears around a bend in the tunnel. Upon arrival you see a small bugs flying in the air all emitting a faint green glow. In the fain tlight you see a corpse wearing gold plated armour.
-	""")
-
-cavern_2 = Room(""" You venture down the 2nd cavern. \n After walking in complete darkness for a few minutes a green glowing light appears around a bend in the tunnel. Upon arrival you see a small bugs flying in the air all emitting a faint green glow. In the fain tlight you see a corpse cluting a sack.
-	""")
-
-cavern_3 = Room(""" You venture down the 3rd cavern. \n After walking in complete darkness for a few minutes a green glowing light appears around a bend in the tunnel. Upon arrival you see a small bugs flying in the air all emitting a faint green glow. In the fain tlight you see a corpse with a war javelin stuck inside it.
+twisted_caverns = Room(""" The door opens to a vast room with a goblin warrior guarding them. He appears to be holding some type of rusty dagger. Behind him is a open door
 	""")
 
 dark_pool = Room(""" After exiting the tunnel you enter a dark cave with some sunlight edging it's way onto the water. The sunlight is coming from too high up to escape that way. Through the clear water you see golwing blue lines leading to two diffetrent points. On one side th eline branches into three where they each lead to a glowing leaver. On the other side the line leads to a closed door.
@@ -96,6 +87,7 @@ goblin_health = 35
 damage = 0
 
 
+
 #binds
 @when("look")
 @when("look around")
@@ -141,9 +133,10 @@ def pickup(item):
 		print("As you go to take a book off the shelf, you find that the book won't move. In frustration you pull the book and and low grumbling sound. After a few seconds the entire bookshelf has moved to one side, revealing a secret room")
 		@when("enter")
 		@when("enter secret room")
+		@when("go intp secret room")
 		def secret_room():
 			print("""You enter the secret room. Inside is a wooden table filled with papers with some strange writting that you cannot read Holding them together is a paper clip""")
-	
+#shows inventory	
 @when("inventory")
 @when("show inventory")
 def player_inventory():
@@ -186,6 +179,10 @@ def seacrh_drawer():
 
 @when("use paper clip")
 @when("use paperclip")
+@when("unlock door")
+@when("unlock door with paperclip")
+@when("unlock door with paper clip")
+
 #@when("go to door")
 #@when("go to lock")
 #@when("pick lock")
@@ -198,7 +195,7 @@ def pick_lock():
 		print("You don't have the equipment to pick the lock")
 		
 		                         
-                       
+#leaving rooms                       
 @when("open door")
 @when("go through door")
 @when("exit room")
@@ -224,7 +221,7 @@ def exit_startingroom():
 		current_room = twisted_caverns
 	elif door_opened == True and current_room == weapon_room and goblin_health <= 0:
 		print("After slaying the goblin you go through the door and into the next room")
-		current_room = twisted_caverns
+		current_room = mirror_room
 		print(current_room)			
 	else:
 		print("The door is locked")
@@ -266,7 +263,7 @@ def eat_jerky():
 			print("Health is full")
 			player_health = 100
 		inventory.take("jerky")
-
+#Shows player health
 @when("player health")
 @when("health")
 @when("show player health")
@@ -320,32 +317,43 @@ def fight_goblin():
 	if current_room == twisted_caverns:
 		print("You swing at the goblin but it manages to dodge your attack just in time. The goblin stumbles back, off balance.")
 		global goblin_health
+		global player_health
 		while goblin_health >= 1:
 			choice = input("What will you do?\nAttack\nDefend\n")
 			if choice.lower() == "attack":
 				global damage
-				damage == random.randint(1,10)
+				damage = random.randint(1,10)
+				
 				if damage == 1:
 					print("You miss. Your pathetic attack doesn't even graze your opponent, leaving you wide open")
 					print("The goblin slashes at your body with his rusty dagger.")
 					player_health -= 20
 				if 2 <= damage <=4:
-					print("You swing at the goblin, however, your swing is weak and doesn't do that mcuh damage to the goblin")
+					print("You swing at the goblin, however, your swing is weak and doesn't do that much damage to the goblin")
 					goblin_health -=10
+					print("The goblin quickly recovers, slashing his dagger at you. The blade makes contact, producing a small wound")
+					player_health -=5
 				if 5 <= damage <= 7:
 					print("You swing your weapon at the goblin. It hits him hard enough to make him stagger back")
 					goblin_health -=15
-				if 5 <= damage <=9:
+					print("The goblin recovers again, and attacks. His attack is parried by your blade so that it only cuts your arm")
+					player_health -=3
+				if 7 <= damage <=9:
 					print("You draw back your arm and swing at the goblin. It hit's him on the head causing a large amount of damage to it")
 					goblin_health -=20
+					print("The goblin shakes his head in recovery. He lunges at you with his dagger grazing your ribs.")
+					player_health -=8
 				if damage == 10:
 					print("You launch your weapon at the goblin with all your strength. It hits him on the head producing a loud crunch. The goblin falls to the ground")
 					goblin_health -=30
+					print("The goblin stands up stunned")
 		else:
 			print("You hit the goblin one final time. Blood starts spilling on the ground, forming a puddle around it's head.")
+			print(f"Health remaining : {player_health}")
 
 
 
+#5th room
 
 
 

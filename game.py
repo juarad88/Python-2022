@@ -38,7 +38,7 @@ mirror_room = Room(""" After passing into the next room you see enormous panes o
 treasure_room = Room("""When entering the next room you freeze in awe. This room is filled with gold and jewels and shiny objects in every size possible. This much gold would make even a king look poor. Shame you can't carry it all
 	""")
 
-Wizard_lair = Room("""The door opens into a vast stone room. Stairs start to climb up reaching a huge throne high above the ground. On each side of the thorne flames flicker, lighting up the room. Sitting comfortabely on the throne is The wizard that killed you.. he stands up then dissapears, reemerging in front of you. "Back again are we?" He asks. You tighten your grip on your weapon.
+Wizard_lair = Room("""The door opens into a vast stone room. Stairs start to climb up reaching a huge throne high above the ground. On each side of the thorne flames flicker, lighting up the room. Sitting comfortabely on the throne is The wizard that killed you. He stands up then dissapears, reemerging in front of you. "Back again are we?" He asks. You tighten your grip on your weapon.
 	""")
 
 # Define items
@@ -85,7 +85,10 @@ door_opened = False
 player_health = 100
 goblin_health = 35
 damage = 0
-
+defend = 0
+wizard_health = 175
+player_damage = 0
+player_defense = 0
 
 
 #binds
@@ -219,10 +222,17 @@ def exit_startingroom():
 	elif door_opened == True and current_room == twisted_caverns and goblin_health > 0:
 		print("You cannot exit the room. The goblin is guarding all possible exits")
 		current_room = twisted_caverns
-	elif door_opened == True and current_room == weapon_room and goblin_health <= 0:
+	elif door_opened == True and current_room == twisted_caverns and goblin_health <= 0:
 		print("After slaying the goblin you go through the door and into the next room")
 		current_room = mirror_room
-		print(current_room)			
+		print(current_room)	
+	elif door_opened == True and current_room == mirror_room and goblin_health <= 0:
+		print("You exit the mirror room.")
+		current_room = Wizard_lair
+		print(current_room)
+	elif door_opened == True and current_room == Wizard_lair and goblin_health <= 0 and wizard_health > 0:
+		print("You turn around, running to the place where you entered. Unfortunatley you don't get far. The wizard shoots a jagged blue bolt out of his staff, turing you into ash.")
+		quit()
 	else:
 		print("The door is locked")
 
@@ -253,22 +263,25 @@ def search_crates():
 def eat_jerky():
 	if inventory.find("beef jerky"):
 		global player_health
-		if player_health > 100:
+		if player_health < 100:
 			player_health += 20
 			print("You eat the jerky. It's tough but doesn't taste too bad") 
-		elif player_health < 100:
+		elif player_health > 100:
 			player_health = 100
 			print("You eat the jerky. It's tough but doesn't taste too bad")
 		elif player_health == 100:
 			print("Health is full")
 			player_health = 100
 		inventory.take("jerky")
+
 #Shows player health
 @when("player health")
 @when("health")
 @when("show player health")
 @when("show health")
 def show_health():
+	if player_health >= 100:
+		player_health == 100
 	print(player_health)
 
 
@@ -338,7 +351,7 @@ def fight_goblin():
 					goblin_health -=15
 					print("The goblin recovers again, and attacks. His attack is parried by your blade so that it only cuts your arm")
 					player_health -=3
-				if 7 <= damage <=9:
+				if 8 <= damage <=9:
 					print("You draw back your arm and swing at the goblin. It hit's him on the head causing a large amount of damage to it")
 					goblin_health -=20
 					print("The goblin shakes his head in recovery. He lunges at you with his dagger grazing your ribs.")
@@ -347,16 +360,147 @@ def fight_goblin():
 					print("You launch your weapon at the goblin with all your strength. It hits him on the head producing a loud crunch. The goblin falls to the ground")
 					goblin_health -=30
 					print("The goblin stands up stunned")
+
+			if choice.lower() == "defend":
+				global defend
+				defend = random.randint(1,10)
+				
+				if defend == 1:
+					print("The goblin slashes at your body with his rusty dagger. You parry the blade with your own.")
+					print("Retaliating you swing your weapon at the goblin. It hits him hard in the ribs, piercing flesh making him whimper.")
+					goblin_health -= 20
+				if 2 <= defend <=4:
+					print("The goblin strikes at you. You manage to block just in time for the blade to miss your body. However you were still hit in the arm.")
+					print("Blocking the goblin's attack threw him off balance. He trips over a rock and hits the ground with a slap.")
+					goblin_health -=2
+					player_health -=2
+				if 5 <= defend <= 7:
+					print("The goblin turns around swinging his blade with enormous strength. You manage to lift your weapon up in time to block the blow. It's power hits your weapon out of your hands and sends you spiralling to the ground.")
+					print("As you land on the ground, the golbin swings at you again, this time with less power. His blade slices through you leg producing blood. As he swings a second time you kick him in the face giving enough time to pick up your weapon and stand up.")
+					goblin_health -=6
+					player_health -=5
+				if 8 <= defend <=9:
+					print("The goblin charges at you ready to swing his dagger at your skull. You block the blade almost effortlessly, Then hit him in the chest with the blunt end of your weapon. ")
+					goblin_health -=10
+				if defend == 10:
+					print("The goblin swings at you. You go to block but stumble over a rock throwing you off balance.")
+					print("The goblin's attack hits you hard, producing a cut on the side of your head. ")
+					player_health -=30
 		else:
 			print("You hit the goblin one final time. Blood starts spilling on the ground, forming a puddle around it's head.")
 			print(f"Health remaining : {player_health}")
 
-
-
 #5th room
+@when("deflect light")
+@when("deflect light with weapon")
+@when("deflect light with sword")
+@when("deflect light with spear")
+@when("deflect light with axe")
+@when("deflect light with morningstar")
+@when("deflect light off weapon")
+@when("deflect light off sword")
+@when("deflect light off spear")
+@when("deflect light off axe")
+@when("deflect light off morningstar")
+@when("bounce light off weapon")
+@when("bounce light off sword")
+@when("bounce light off spear")
+@when("bounce light off axe")
+@when("bounce light off morningstar")
+def deflect_light():
+	if current_room == mirror_room:
+		print("You delfect the light beam using your weapon. After a few attempts you manage to shine the light on the orb, after a few seconds the orb starts to glow a pale green.")
+		print("Thr room starts to rumble as a pane of glass ascends making way to a possible exit")
 
+#boss fight
+@when("attack wizard")
+@when("fight wizard")
+@when("kill wizard")
+@when("slay wizard")
+@when(" hit wizard")
+@when("attack wizard with sword")
+@when("fight wizard with sword")
+@when("kill wizard with sword")
+@when("slay wizard with sword")
+@when("hit wizard with sword")
+@when("attack wizard with axe")
+@when("fight wizard with axe")
+@when("kill wizard with axe")
+@when("slay wizard with axe")
+@when("hit wizard with axe")
+@when("attack wizard with spear")
+@when("fight wizard with spear")
+@when("kill wizard with spear")
+@when("slay wizard with spear")
+@when("hit wizard with spear")
+@when("attack wizard with morningstar")
+@when("fight wizard with morningstar")
+@when("kill wizard with morningstar")
+@when("slay wizard with morningstar")	
+@when("hit wizard with morningstar")
+def fight_wizard():
+	if current_room == Wizard_lair:
+		print("The wizard  takes a step back twirling his staff in his hands, ready to strike.")
+		global wizard_health
+		global player_health
+		while wizard_health >= 1:
+			boss_fight = input("What will you do?\nAttack\nDefend\n")
+			if boss_fight.lower() == "attack":
+				global player_damage
+				player_damage = random.randint(1,10)
+				
+				if player_damage == 1:
+					print("You miss. Your pathetic attack doesn't even graze your opponent, leaving you wide open")
+					print("The goblin slashes at your body with his rusty dagger.")
+					player_health -= 20
+				if 2 <= player_damage <=4:
+					print("You swing at the goblin, however, your swing is weak and doesn't do that much damage to the goblin")
+					goblin_health -=10
+					print("The goblin quickly recovers, slashing his dagger at you. The blade makes contact, producing a small wound")
+					player_health -=5
+				if 5 <= player_damage <= 7:
+					print("You swing your weapon at the goblin. It hits him hard enough to make him stagger back")
+					goblin_health -=15
+					print("The goblin recovers again, and attacks. His attack is parried by your blade so that it only cuts your arm")
+					player_health -=3
+				if 8 <= player_damage <=9:
+					print("You draw back your arm and swing at the goblin. It hit's him on the head causing a large amount of damage to it")
+					goblin_health -=20
+					print("The goblin shakes his head in recovery. He lunges at you with his dagger grazing your ribs.")
+					player_health -=8
+				if player_damage == 10:
+					print("You launch your weapon at the goblin with all your strength. It hits him on the head producing a loud crunch. The goblin falls to the ground")
+					goblin_health -=30
+					print("The goblin stands up stunned")
 
-
+			if choice.lower() == "defend":
+				global defend
+				defend = random.randint(1,10)
+				
+				if player_defense == 1:
+					print("The goblin slashes at your body with his rusty dagger. You parry the blade with your own.")
+					print("Retaliating you swing your weapon at the goblin. It hits him hard in the ribs, piercing flesh making him whimper.")
+					goblin_health -= 20
+				if 2 <= player_defense <=4:
+					print("The goblin strikes at you. You manage to block just in time for the blade to miss your body. However you were still hit in the arm.")
+					print("Blocking the goblin's attack threw him off balance. He trips over a rock and hits the ground with a slap.")
+					goblin_health -=2
+					player_health -=2
+				if 5 <= player_defense <= 7:
+					print("The goblin turns around swinging his blade with enormous strength. You manage to lift your weapon up in time to block the blow. It's power hits your weapon out of your hands and sends you spiralling to the ground.")
+					print("As you land on the ground, the golbin swings at you again, this time with less power. His blade slices through you leg producing blood. As he swings a second time you kick him in the face giving enough time to pick up your weapon and stand up.")
+					goblin_health -=6
+					player_health -=5
+				if 8 <= player_defense <=9:
+					print("The goblin charges at you ready to swing his dagger at your skull. You block the blade almost effortlessly, Then hit him in the chest with the blunt end of your weapon. ")
+					goblin_health -=10
+				if player_defense == 10:
+					print("The goblin swings at you. You go to block but stumble over a rock throwing you off balance.")
+					print("The goblin's attack hits you hard, producing a cut on the side of your head. ")
+					player_health -=30
+		else:
+			print("You hit the goblin one final time. Blood starts spilling on the ground, forming a puddle around it's head.")
+			print(f"Health remaining : {player_health}")
 
 
 
